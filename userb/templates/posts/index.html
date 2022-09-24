@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Userb</title>
+        <style>
+            .posts {
+                background-color: yellow;
+                padding: 80px;
+                margin: 10px;
+                border-radius: 10px;
+            }
+        </style>
+        <script>
+            let contador = 1;
+            let cantidad = 5;
+            document.addEventListener('DOMContentLoaded',cargar)
+
+            function cargar()
+            {
+                let inicio = contador
+                let final = inicio + cantidad - 1
+                contador = final + 1
+                fetch(`/userb/posts?inicio=${inicio}&final=${final}`)
+                .then(response => response.json())
+                .then(data => {
+                    for(let i = 0; i < data.posts.length; i++)
+                    {
+                        let division_post = document.createElement('div')
+                        division_post.className = 'posts'
+                        division_post.innerHTML = 'Nombre : ' + data.posts[i][0] + ' , Apellido : ' + data.posts[i][1]
+                        document.querySelector('#posts').append(division_post)
+                    }
+                })
+            }
+
+            window.onscroll = () => {
+                if(window.innerHeight + window.scrollY >= document.body.offsetHeight)
+                {
+                    cargar()
+                }
+            }
+
+        </script>
+    </head>
+    <body>
+        <div id="posts">
+        </div>
+    </body>
+</html>

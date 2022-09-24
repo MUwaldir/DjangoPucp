@@ -1,0 +1,11 @@
+{% extends "ejemplo_django/layout.html" %}
+
+{% block contenido %}
+<div>
+    <ul>
+        {% for elemento in lista_elementos %}
+        <li>{{ elemento }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

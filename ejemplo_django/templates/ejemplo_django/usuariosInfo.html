@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Lista de usuarios
+        </title>
+        <link href="{% static 'ejemplo_django/estilo.css' %}" rel="stylesheet">
+        <script src="{% static 'ejemplo_django/codigo_ejemplo.js' %}"></script>
+    </head>
+    <body>
+        <div>
+            <h2>Ingresar datos</h2>
+        </div>
+        <div>
+            <form method="post" action="{% url 'ejemplo_django:usuarioInfo' %}">
+            {% csrf_token %}
+                <div>
+                    <label>Nombre : </label>
+                    <input type="text" name="usuarioNombre">
+                </div>
+                <div>
+                    <label>Apellido : </label>
+                    <input type="text" name="usuarioApellido">
+                </div>
+                <div>
+                    <label>Direccion : </label>
+                    <input type="text" name="usuarioDireccion">
+                </div>
+                <div>
+                    <label>Codigo : </label>
+                    <input type="text" name="usuarioCodigo">
+                </div>
+                <div>
+                    <label>Email : </label>
+                    <input type="text" name="usuarioEmail">
+                </div>
+                <div>
+                    <button type="submit">Enviar Informacion</button>
+                </div>
+            </form>
+        </div>
+        <div>
+            <h2>Estos son los usuarios registrados</h2>
+        </div>
+        <div>
+            <ul>
+                {% for estudiante in usuarios %}
+                <li>Nombre : {{ estudiante.nombre }} , Codigo : {{ estudiante.codigo }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </body>
+</html>
