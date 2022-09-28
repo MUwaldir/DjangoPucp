@@ -107,7 +107,8 @@
       function nuevaTarea() {
 
         console.log("Crear nueva tarea");
-        //Escribir su codigo aqui
+        
+        const tareaTable = document.querySelector('#tareasTable')
         const f_creacion =document.querySelector('#fecha_creacion').value
         const f_entrega =document.querySelector('#fecha_entrega').value
         const descripcion =document.querySelector('#descripcion').value
@@ -131,6 +132,51 @@
         .then(response => response.json())
         .then(data=>{
             console.log(data)
+            tareas=data.info
+            let plantilla = ''
+            tareas.forEach(el => {
+              plantilla +=`
+              <tr>
+              <td scope="row">${ el.fechaCreacion }</td>
+              <td>${ el.fechaEntrega }</td>
+              <td>${ el.estadoTarea }</td>
+              <td style="text-align: center">
+                <a
+                  id="detalle${ el.id }"
+                  class="btn btn-info"
+                  style="color: black"
+                  data-bs-toggle="modal"
+                  data-bs-target="#verDetalle"
+                  
+                  onclick="mostrarDetalle(this.id)"
+                  ><i class="fa fa-eye"></i
+                ></a>
+              </td>
+              <td style="text-align: center">
+                <a
+                  id="editar${ el.id }"
+                  class="btn btn-warning"
+                  style="color: black"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editarTarea"
+                  onclick="editarTarea(this.id)"
+                  ><i class="fa fa-edit"></i
+                ></a>
+              </td>
+              <td style="text-align: center">
+                <a
+                  id="eliminar${ el.id }"
+                  class="btn btn-danger"
+                  style="color: white"
+                  onclick="eliminarTarea(this.id)"
+                  ><i class="fa fa-trash"></i
+                ></a>
+              </td>
+            </tr>
+              `
+            });
+
+            tareaTable.innerHTML = plantilla
         })
         
         //Funcion para obtener token CSRF
@@ -151,7 +197,7 @@
                 }
                 return cookieValue
             }
-            location.reload()
+            
         //Fin del codigo
         $(".modal-backdrop").remove();
         $("#nuevaTarea").hide();
@@ -182,12 +228,56 @@
            La funcion fetch deberá de recibir dicha confirmacion y eliminará la tarea de la tabla
            */
       function eliminarTarea(id_tarea) {
-
+        const tareaTable = document.querySelector('#tareasTable')
         fetch(`eliminarTarea?ta_id=${id_tarea}`)
         .then(response => response.json())
         .then(data=>{
             console.log(data)
-            location.reload()
+            tareas=data.info
+            let plantilla = ''
+            tareas.forEach(el => {
+              plantilla +=`
+              <tr>
+              <td scope="row">${ el.fechaCreacion }</td>
+              <td>${ el.fechaEntrega }</td>
+              <td>${ el.estadoTarea }</td>
+              <td style="text-align: center">
+                <a
+                  id="detalle${ el.id }"
+                  class="btn btn-info"
+                  style="color: black"
+                  data-bs-toggle="modal"
+                  data-bs-target="#verDetalle"
+                  
+                  onclick="mostrarDetalle(this.id)"
+                  ><i class="fa fa-eye"></i
+                ></a>
+              </td>
+              <td style="text-align: center">
+                <a
+                  id="editar${ el.id }"
+                  class="btn btn-warning"
+                  style="color: black"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editarTarea"
+                  onclick="editarTarea(this.id)"
+                  ><i class="fa fa-edit"></i
+                ></a>
+              </td>
+              <td style="text-align: center">
+                <a
+                  id="eliminar${ el.id }"
+                  class="btn btn-danger"
+                  style="color: white"
+                  onclick="eliminarTarea(this.id)"
+                  ><i class="fa fa-trash"></i
+                ></a>
+              </td>
+            </tr>
+              `
+            });
+
+            tareaTable.innerHTML = plantilla
         })
         
       }
@@ -305,7 +395,7 @@
             <th scope="col">Eliminar tarea</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="tareasTable">
           {% for tarea in tareas_totales %}
           <tr>
             <td scope="row">{{ tarea.fechaCreacion }}</td>
@@ -358,6 +448,7 @@
     Para esta actividad la tarea tiene Fecha de creacion, Fecha de entrega, Estado de tarea y Descripcion
     Recordar eliminar la informacion al interior de los input cuando la tarea haya sido guardada.
 -->
+
 <div
   class="modal fade"
   data-bs-backdrop="static"

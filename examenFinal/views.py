@@ -34,7 +34,6 @@ def dashboard(request):
     })
 
 def obtener_info_tarea(request):
-   
     id_tarea = str(request.GET.get('tarea_id'))
     id_t =id_tarea.split('detalle')
     tarea = tareasExamen.objects.filter(id=id_t[1])
@@ -51,10 +50,11 @@ def nuevaTarea(request):
     f_creacion= informacion.get('f_creacion')
     f_entrega = informacion.get('f_entrega')
     descripcion = informacion.get('descripcion')
-    estado= informacion.get('estado')
-    tareasExamen(fechaCreacion = f_creacion, fechaEntrega=f_entrega, descripcion=descripcion,estadoTarea=estado).save()   
+    estado= informacion.get('estado').upper()
+    tareasExamen(fechaCreacion = f_creacion, fechaEntrega=f_entrega, descripcion=descripcion,estadoTarea=estado).save()
+    tareas=tareasExamen.objects.all().order_by('id').values()
     return JsonResponse({
-        'info':'tarea aceptada'
+        'info':list(tareas)
     })
   
 def eliminarTarea(request):
@@ -62,8 +62,9 @@ def eliminarTarea(request):
     id_t =id_tarea.split('eliminar')
     tarea = tareasExamen.objects.filter(id=id_t[1])
     tarea.delete()
+    tareas=tareasExamen.objects.all().order_by('id').values()
     return JsonResponse({
-        'info':'tarea borrada'
+        'info':list(tareas)
     })
 
 def editarTarea(request):
@@ -80,7 +81,6 @@ def editarTarea(request):
 
 def actualizarTarea(request, tarea_id):
     tarea_ac = tareasExamen.objects.get(id=tarea_id)
-    print(tarea_ac)
     if request.method == 'POST':
         t_creacion = request.POST.get('fecha_creacion')
         t_entrega= request.POST.get('fecha_entrega')
