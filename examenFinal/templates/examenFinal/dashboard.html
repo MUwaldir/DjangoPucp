@@ -200,8 +200,8 @@
             
             
         //Fin del codigo
-        $(".modal-backdrop").remove();
-        $("#nuevaTarea").hide();
+        /* $(".modal-backdrop").remove();
+        $("#nuevaTarea").hide(); */
       }
 
       /*
@@ -503,7 +503,7 @@
           >
           Cancelar
         </button>
-        <button type="submit" class="btn btn-primary" onclick="nuevaTarea()">
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="nuevaTarea()">
           Agregar
         </button>
       </div>
@@ -529,7 +529,7 @@
   role="dialog"
   id="editarTarea"
 >
-<div id="editTarea" class="modal-dialog" role="document">
+<div id="editTarea" class="modal-dialog modal-dialog-scrollable" role="document">
 
   </div>
 </div>
