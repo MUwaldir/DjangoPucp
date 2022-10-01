@@ -89,7 +89,7 @@ def actualizarTarea(request, tarea_id):
         tarea_ac.fechaCreacion = t_creacion
         tarea_ac.fechaEntrega = t_entrega
         tarea_ac.descripcion = descripcion
-        tarea_ac.estadoTarea = estado
+        tarea_ac.estadoTarea = estado.upper()
         tarea_ac.save()
         return HttpResponseRedirect(reverse('examenFinal:dashboard'))
 

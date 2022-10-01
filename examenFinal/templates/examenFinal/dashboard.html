@@ -63,10 +63,10 @@
               info_tarea =data.tareas
               console.log(info_tarea[0][0])
               let plantilla = `
-                <h2 id="fc">Fecha de Creacion: ${info_tarea[0][0]}</h2>
-                <h2  id="fe">Fecha de Entrega: ${info_tarea[0][1]}</h2>
-                <p  id="des">Descripción : ${info_tarea[0][2]}</p>
-                <h2  id="es">Estado de la tarea: ${info_tarea[0][3]}</h2>
+              <p><h3 id="fc">Fecha de Creacion:</h3> ${info_tarea[0][0]}</p>
+              <p><h3  id="fe">Fecha de Entrega:</h3>${info_tarea[0][1]}</p>
+              <p><h3 id="des">Descripción :</h3> ${info_tarea[0][2]}</p>
+              <p><h3  id="es">Estado de la tarea:</h3> <strong>${info_tarea[0][3]}</strong></p>
                  `
              console.log(plantilla)
               informacion_tarea.innerHTML = plantilla;
@@ -105,7 +105,7 @@
            Al infalizar el codigo recordar eliminar la informacion al interior de los inputs definidos
            */
       function nuevaTarea() {
-
+        
         console.log("Crear nueva tarea");
         
         const tareaTable = document.querySelector('#tareasTable')
@@ -133,16 +133,16 @@
         .then(data=>{
             console.log(data)
             tareas=data.info
-            let plantilla = ''
-            tareas.forEach(el => {
-              plantilla +=`
+            const dataTarea = tareas[tareas.length - 1]
+
+              const plantilla = `
               <tr>
-              <td scope="row">${ el.fechaCreacion }</td>
-              <td>${ el.fechaEntrega }</td>
-              <td>${ el.estadoTarea }</td>
+              <td scope="row">${ dataTarea.fechaCreacion }</td>
+              <td>${ dataTarea.fechaEntrega }</td>
+              <td>${ dataTarea.estadoTarea }</td>
               <td style="text-align: center">
                 <a
-                  id="detalle${ el.id }"
+                  id="detalle${ dataTarea.id }"
                   class="btn btn-info"
                   style="color: black"
                   data-bs-toggle="modal"
@@ -154,7 +154,7 @@
               </td>
               <td style="text-align: center">
                 <a
-                  id="editar${ el.id }"
+                  id="editar${ dataTarea.id }"
                   class="btn btn-warning"
                   style="color: black"
                   data-bs-toggle="modal"
@@ -165,7 +165,7 @@
               </td>
               <td style="text-align: center">
                 <a
-                  id="eliminar${ el.id }"
+                  id="eliminar${ dataTarea.id }"
                   class="btn btn-danger"
                   style="color: white"
                   onclick="eliminarTarea(this.id)"
@@ -174,11 +174,13 @@
               </td>
             </tr>
               `
-            });
-
-            tareaTable.innerHTML = plantilla
-        })
-        
+            
+            console.log(plantilla)
+            tareaTable.insertAdjacentHTML("beforeend",plantilla);
+            eliminarNuevo()
+          })
+          
+          
         //Funcion para obtener token CSRF
         function getCookie(name)
             {
@@ -197,6 +199,7 @@
                 }
                 return cookieValue
             }
+            
             
         //Fin del codigo
         $(".modal-backdrop").remove();
@@ -395,7 +398,7 @@
             <th scope="col">Eliminar tarea</th>
           </tr>
         </thead>
-        <tbody id="tareasTable">
+        <tbody id="tareasTable" >
           {% for tarea in tareas_totales %}
           <tr>
             <td scope="row">{{ tarea.fechaCreacion }}</td>
